@@ -1,5 +1,8 @@
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Line, Pie } from "recharts";
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   ResponsiveContainer,
   LineChart,
@@ -22,6 +25,13 @@ const formatCurrency = (value: number) => {
 };
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    navigate("/");
+  };
+
   const { data: transactions, isLoading: isLoadingTransactions } = useTransactions();
   const { data: categories } = useCategories();
   const { data: accounts } = useAccounts();
@@ -145,7 +155,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto space-y-8 animate-fadeIn">
-        <h1 className="text-3xl font-semibold text-gray-800">Dashboard Financeiro</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-semibold text-gray-800">Dashboard Financeiro</h1>
+          <Button variant="outline" onClick={handleLogout}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Sair
+          </Button>
+        </div>
         
         {/* Formulário de Transação */}
         <TransactionForm />
